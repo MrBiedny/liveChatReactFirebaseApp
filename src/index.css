@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+body {
+  align-items: center;
+  background-image: url("/bg.jpg");
+  color: #fff;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+
+.container {
+  background-color: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(1.25rem) saturate(180%);
+  border: 1px solid rgb(255, 255, 255, 0.125);
+  border-radius: 0.75rem;
+  display: flex;
+  height: 90vh;
+  width: 90vw;
+}
+
+/* Może zmienić width na 80? */
+
+.loading {
+  padding: 3rem;
+  font-size: 2.25rem;
+  border-radius: 10px;
+  background-color: rgba(17, 25, 40, 0.9);
+}

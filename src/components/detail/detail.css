@@ -1,0 +1,101 @@
+.detail {
+  flex: 1;
+
+  .user {
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #dddddd35;
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  .info {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .option {
+      .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 30px;
+          height: 30px;
+          background-color: rgba(17, 25, 40, 0.3);
+          padding: 0.75rem;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+      }
+
+      .photos {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        margin-top: 1.25rem;
+
+        .photoItem {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .photoDetail {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+
+            img {
+              width: 40px;
+              height: 40px;
+              border-radius: 5px;
+              object-fit: cover;
+            }
+
+            span {
+              font-size: 0.75rem;
+              color: #d3d3d3;
+              font-weight: 300;
+            }
+          }
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(17, 25, 40, 0.3);
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    button {
+      padding: 1rem;
+      background-color: rgba(230, 74, 105, 0.553);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(220, 20, 60, 0.796);
+      }
+
+      &.logout {
+        padding: 0.75rem;
+        background-color: #1a73e8;
+      }
+    }
+  }
+}
