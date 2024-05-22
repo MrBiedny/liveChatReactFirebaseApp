@@ -6,7 +6,6 @@ import "./detail.css";
 
 function Detail() {
   const {
-    chatId,
     user,
     isCurrentUserBlocked,
     isReceiverBlocked,
@@ -16,7 +15,7 @@ function Detail() {
   const { currentUser } = useUserStore();
 
   async function handleBlock() {
-    if (!user) return;
+    if (!user || !currentUser) return;
 
     const userDocRef = doc(db, "users", currentUser.id);
 
@@ -61,26 +60,6 @@ function Detail() {
             <img src="./arrowDown.png" alt="" />
           </div>
           <div className="photos">
-            <div className="photoItem">
-              <div className="photoDetail">
-                <img
-                  src="https://coloray.pl/images/cd/och-1307118430/1/s/obraz-canvas-drzewa-fale-zachod-slonca.jpg"
-                  alt=""
-                />
-                <span>photo_2024_2.png</span>
-              </div>
-              <img src="./download.png" alt="" className="icon" />
-            </div>
-            <div className="photoItem">
-              <div className="photoDetail">
-                <img
-                  src="https://coloray.pl/images/cd/och-1307118430/1/s/obraz-canvas-drzewa-fale-zachod-slonca.jpg"
-                  alt=""
-                />
-                <span>photo_2024_2.png</span>
-              </div>
-              <img src="./download.png" alt="" className="icon" />
-            </div>
             <div className="photoItem">
               <div className="photoDetail">
                 <img

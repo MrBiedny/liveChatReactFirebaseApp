@@ -5,44 +5,50 @@ import { useChatStore } from "../../../lib/chatStore";
 import { useUserStore } from "../../../lib/userStore";
 import AddUser from "./addUser/AddUser";
 import "./chatList.css";
+import { ChatData, User } from "../../../types/Types";
 
 function ChatList() {
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<ChatData[]>([]);
   const [addMode, setAddMode] = useState<boolean>(false);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
 
   const { currentUser } = useUserStore();
-  const { chatId, changeChat } = useChatStore();
+  const { changeChat } = useChatStore();
 
   useEffect(
     function () {
+      if (!currentUser) return;
       const unSub = onSnapshot(
         doc(db, "userchats", currentUser.id),
         async (res) => {
-          const items = res.data().chats;
+          const data = res.data();
+          if (data && data.chats) {
+            const items: ChatData[] = data.chats;
 
-          const promises = items.map(async (item) => {
-            const userDocRef = doc(db, "users", item.receiverId);
-            const userDocSnap = await getDoc(userDocRef);
+            const promises = items.map(async (item: ChatData) => {
+              const userDocRef = doc(db, "users", item.receiverId);
+              const userDocSnap = await getDoc(userDocRef);
 
-            const user = userDocSnap.data();
+              const user = userDocSnap.data() as User;
 
-            return { ...item, user };
-          });
+              return { ...item, user };
+            });
 
-          const chatData = await Promise.all(promises);
+            const chatData: ChatData[] = await Promise.all(promises);
 
-          setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+            setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+          }
         }
       );
       return () => {
         unSub();
       };
     },
-    [currentUser.id]
+    [currentUser]
   );
 
-  async function handleSelect(chat) {
+  async function handleSelect(chat: ChatData) {
+    if (!currentUser) return;
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
       return rest;
@@ -54,7 +60,7 @@ function ChatList() {
 
     userChats[chatIndex].isSeen = true;
 
-    const userChatsRef = doc(db, "userchats", currentUser.id);
+    const userChatsRef = doc(db, "userchats", currentUser?.id);
 
     try {
       await updateDoc(userChatsRef, {
@@ -66,8 +72,11 @@ function ChatList() {
     }
   }
 
-  const filteredChats = chats.filter((c) =>
-    c.user.username.toLowerCase().includes(input.toLowerCase())
+  const filteredChats = chats.filter(
+    (c) =>
+      c.user.username.toLowerCase().includes(input.toLowerCase()) &&
+      currentUser &&
+      c.user.blocked.includes(currentUser.id)
   );
 
   return (

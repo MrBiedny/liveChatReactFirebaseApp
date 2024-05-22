@@ -40,9 +40,13 @@ function Login() {
   async function handleRegister(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
 
-    const { username, email, password } = Object.fromEntries(formData);
+    // const { username, email, password } = Object.fromEntries(formData);
+
+    const username = formData.get("username") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     if (!username || !email || !password)
       return toast.warn("Please enter inputs!");
@@ -73,25 +77,25 @@ function Login() {
 
       toast.success("Account created! You can login now!");
     } catch (err) {
-      console.log(err);
-      toast.error(err.message);
+      if (err instanceof Error) toast.error(err.message);
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleLogin(e: FormEvent) {
+  async function handleLogin(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
 
-    const formData = new FormData(e.target);
-    const { email, password } = Object.fromEntries(formData);
+    const formData = new FormData(e.currentTarget);
+    // const { email, password } = Object.fromEntries(formData);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      console.log(err);
-      toast.error(err.message);
+      if (err instanceof Error) toast.error(err.message);
     } finally {
       setLoading(false);
     }

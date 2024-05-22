@@ -13,15 +13,15 @@ import {
 import { db } from "../../../../lib/firebase";
 import { useUserStore } from "../../../../lib/userStore";
 import "./addUser.css";
+import { User } from "../../../../types/Types";
 
 function AddUser() {
-  const [user, setUser] = useState(null);
-
+  const [user, setUser] = useState<User | null>(null);
   const { currentUser } = useUserStore();
 
-  async function handleSearch(e) {
+  async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
     const username = formData.get("username");
 
     try {
@@ -30,7 +30,7 @@ function AddUser() {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        setUser(querySnapshot.docs[0].data());
+        setUser(querySnapshot.docs[0].data() as User);
       }
     } catch (err) {
       console.log(err);
@@ -49,20 +49,20 @@ function AddUser() {
         messages: [],
       });
 
-      await updateDoc(doc(userChatsRef, user.id), {
+      await updateDoc(doc(userChatsRef, user?.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
           lastMessage: "",
-          receiverId: currentUser.id,
+          receiverId: currentUser?.id,
           updatedAt: Date.now(),
         }),
       });
 
-      await updateDoc(doc(userChatsRef, currentUser.id), {
+      await updateDoc(doc(userChatsRef, currentUser?.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
           lastMessage: "",
-          receiverId: user.id,
+          receiverId: user?.id,
           updatedAt: Date.now(),
         }),
       });
